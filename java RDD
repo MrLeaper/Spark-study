@@ -1,0 +1,216 @@
+/**
+ * Illustrates a wordcount in Java
+ */
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Iterator;
+import java.util.Map;
+
+import com.sun.deploy.util.SearchPath;
+import okhttp3.internal.Internal;
+import org.apache.spark.Accumulator;
+import org.apache.spark.api.java.function.*;
+import org.apache.spark.broadcast.Broadcast;
+import org.codehaus.janino.Java;
+import scala.Array;
+import scala.Tuple2;
+
+import org.apache.commons.lang.StringUtils;
+
+import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.api.java.JavaPairRDD;
+import org.apache.spark.api.java.JavaSparkContext;
+import scala.tools.cmd.Spec;
+
+
+public class Javaspark {
+    public static void main(String[] args) throws Exception {
+        // Create a Java Spark Context.
+        SparkConf conf = new SparkConf().setMaster("local").setAppName("SparkStudy");
+        JavaSparkContext sc = new JavaSparkContext(conf);
+        final Accumulator<Integer> acc = sc.accumulator(0);
+        final int factor = 3;
+        final Broadcast<Integer> broadfactor1 = sc.broadcast(factor);
+//        List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+//        JavaRDD<Integer> numberRDD = sc.parallelize(numbers);
+//        JavaRDD<Integer> broad = numberRDD.map(new Function<Integer, Integer>() {
+//            public Integer call(Integer integer) throws Exception {
+//                int factor = broadfactor1.value();
+//                return integer * factor;
+//            }
+//        });
+//        broad.foreach(new VoidFunction<Integer>() {
+//            public void call(Integer integer) throws Exception {
+//                System.out.println(integer);
+//                acc.add(integer);
+//            }
+//        });
+//        System.out.println(acc.value());
+//        List<Integer> ls = numberRDD.collect();
+//        for (Integer l : ls) {
+//            System.out.println(l);
+//        }
+//        int count = numberRDD.reduce(new Function2<Integer, Integer, Integer>() {
+//            public Integer call(Integer integer, Integer integer2) throws Exception {
+//                return integer + integer2;
+//            }
+//        });
+//        System.out.println(count);
+
+//        JavaRDD<Integer> multipRDD = numberRDD.map(new Function<Integer, Integer>() {
+//            public Integer call(Integer integer) throws Exception {
+//                return integer * 2;
+//            }
+//        });
+//        multipRDD.foreach(new VoidFunction<Integer>() {
+//            public void call(Integer integer) throws Exception {
+//                System.out.println(integer);
+//            }
+//        });
+
+//        JavaRDD<Integer> filterRDD = numberRDD.filter(new Function<Integer, Boolean>() {
+//            public Boolean call(Integer integer) throws Exception {
+//                return integer % 2 == 0;
+//            }
+//        });
+//        filterRDD.foreach(new VoidFunction<Integer>() {
+//            public void call(Integer integer) throws Exception {
+//                System.out.println(integer);
+//            }
+//        });
+
+//        List<String> lines = Arrays.asList("hello you","hello me","i love you","you love me","helloworld");
+//        JavaRDD<String> lineRDD = sc.parallelize(lines);
+//        JavaRDD<String> words = lineRDD.flatMap(new FlatMapFunction<String, String>() {
+//            public Iterator<String> call(String s) throws Exception {
+//                return Arrays.asList(s.split(" "));
+//            }
+//        });
+//        words.foreach(new VoidFunction<String>() {
+//            public void call(String s) throws Exception {
+//                System.out.println(s);
+//            }
+//        });
+//        List<Tuple2<String,Integer>> scorelist = Arrays.asList(
+//                new Tuple2<String, Integer>("class1",90),
+//                new Tuple2<String, Integer>("class2",95),
+//                new Tuple2<String, Integer>("class1",80),
+//                new Tuple2<String, Integer>("class2",75),
+//                new Tuple2<String, Integer>("class3",97));
+//        JavaPairRDD<String,Integer> scores = sc.parallelizePairs(scorelist);
+//        JavaPairRDD<String, Iterable<Integer>> groupscores = scores.groupByKey();
+//        groupscores.foreach(new VoidFunction<Tuple2<String, Iterable<Integer>>>() {
+//            public void call(Tuple2<String, Iterable<Integer>> stringIterableTuple2) throws Exception {
+//                System.out.println("class:" + stringIterableTuple2._1);
+//                Iterator<Integer> ite = stringIterableTuple2._2.iterator();
+//                while (ite.hasNext()){
+//                    System.out.println(ite.next());
+//                }
+//                System.out.println("-------------------");
+//            }
+//        });
+//        JavaPairRDD<String,Integer> totalScore = scores.reduceByKey(new Function2<Integer, Integer, Integer>() {
+//            public Integer call(Integer integer, Integer integer2) throws Exception {
+//                return integer + integer2;
+//            }
+//        });
+//        totalScore.foreach(new VoidFunction<Tuple2<String, Integer>>() {
+//            public void call(Tuple2<String, Integer> stringIntegerTuple2) throws Exception {
+//                System.out.println(stringIntegerTuple2._1 + " " + stringIntegerTuple2._2);
+//                System.out.println("-------");
+//            }
+//        });
+//        List<Tuple2<Integer,String>> scoreList = Arrays.asList(
+//                new Tuple2<Integer, String>(65,"aa"),
+//                new Tuple2<Integer, String>(63,"bb"),
+//                new Tuple2<Integer, String>(67,"cc"),
+//                new Tuple2<Integer, String>(55,"dd"),
+//                new Tuple2<Integer, String>(90,"aa")
+//        );
+//        JavaPairRDD<Integer,String> sortedRDD = sc.parallelizePairs(scoreList);
+//        JavaPairRDD<Integer,String> sortRDD = sortedRDD.sortByKey();
+//        sortRDD.foreach(new VoidFunction<Tuple2<Integer, String>>() {
+//            public void call(Tuple2<Integer, String> integerStringTuple2) throws Exception {
+//                System.out.println(integerStringTuple2._1 + ":" + integerStringTuple2._2);
+//            }
+//        });
+//        List<Tuple2<Integer, String>> list1 = Arrays.asList(
+//                new Tuple2<Integer, String>(1, "aa"),
+//                new Tuple2<Integer, String>(2, "bb"),
+//                new Tuple2<Integer, String>(3, "cc"),
+//                new Tuple2<Integer, String>(3, "cd")
+//        );
+//        List<Tuple2<Integer, Integer>> list2 = Arrays.asList(
+//                new Tuple2<Integer, Integer>(1, 60),
+//                new Tuple2<Integer, Integer>(2, 70),
+//                new Tuple2<Integer, Integer>(3, 90)
+//        );
+//        JavaPairRDD<Integer,String> stu = sc.parallelizePairs(list1);
+//        JavaPairRDD<Integer,Integer> scro = sc.parallelizePairs(list2);
+//        JavaPairRDD<Integer,Tuple2<String,Integer>> stuscro = stu.join(scro);
+//        stuscro.foreach(new VoidFunction<Tuple2<Integer, Tuple2<String, Integer>>>() {
+//            public void call(Tuple2<Integer, Tuple2<String, Integer>> integerTuple2Tuple2) throws Exception {
+//                System.out.print(integerTuple2Tuple2._1 + ": ");
+//                System.out.print(integerTuple2Tuple2._2._1  + ",");
+//                System.out.println(integerTuple2Tuple2._2._2);
+//            }
+//        });
+//        JavaRDD<String> lines = sc.textFile("test").cache();
+//        long bgeintime = System.currentTimeMillis();
+//        long count = lines.count();
+//        System.out.println(count);
+//        long endtime = System.currentTimeMillis();
+//        System.out.println("Time:" + (endtime - bgeintime));
+//        long bgeintime2 = System.currentTimeMillis();
+//        long count2 = lines.count();
+//        System.out.println(count);
+//        long endtime2 = System.currentTimeMillis();
+//        System.out.println("Time:" + (endtime2 - bgeintime2));
+
+        JavaRDD<String> lines = sc.textFile("test");
+        JavaRDD<String> words = lines.flatMap(new FlatMapFunction<String, String>() {
+            public Iterator<String> call(String s) throws Exception {
+                return Arrays.asList(s.split( " ")).iterator();
+            }
+        });
+        JavaPairRDD<String,Integer> pairs = words.mapToPair(new PairFunction<String, String, Integer>() {
+            public Tuple2<String, Integer> call(String s) throws Exception {
+                return new Tuple2<String, Integer>(s,1);
+            }
+        });
+        JavaPairRDD<String,Integer> wordCounts = pairs.reduceByKey(new Function2<Integer, Integer, Integer>() {
+            public Integer call(Integer integer, Integer integer2) throws Exception {
+                return integer + integer2;
+            }
+        });
+        wordCounts.foreach(new VoidFunction<Tuple2<String, Integer>>() {
+            public void call(Tuple2<String, Integer> stringIntegerTuple2) throws Exception {
+                System.out.println(stringIntegerTuple2._1 +":"  + stringIntegerTuple2._2);
+            }
+        });
+        JavaPairRDD<Integer,String> countwords = wordCounts.mapToPair(new PairFunction<Tuple2<String, Integer>, Integer, String>() {
+            public Tuple2<Integer, String> call(Tuple2<String, Integer> stringIntegerTuple2) throws Exception {
+                return new Tuple2<Integer, String>(stringIntegerTuple2._2,stringIntegerTuple2._1);
+            }
+        });
+        countwords.foreach(new VoidFunction<Tuple2<Integer, String>>() {
+            public void call(Tuple2<Integer, String> integerStringTuple2) throws Exception {
+                System.out.println(integerStringTuple2._1 + ":" + integerStringTuple2._2);
+            }
+        });
+        JavaPairRDD<Integer,String> sorted = countwords.sortByKey(false);
+        JavaPairRDD<String,Integer> init = sorted.mapToPair(new PairFunction<Tuple2<Integer, String>, String, Integer>() {
+            public Tuple2<String, Integer> call(Tuple2<Integer, String> integerStringTuple2) throws Exception {
+                return new Tuple2<String, Integer>(integerStringTuple2._2,integerStringTuple2._1);
+            }
+        });
+        init.foreach(new VoidFunction<Tuple2<String, Integer>>() {
+            public void call(Tuple2<String, Integer> stringIntegerTuple2) throws Exception {
+                System.out.println(stringIntegerTuple2._1 + ":" + stringIntegerTuple2._2);
+            }
+        });
+        sc.close();
+    }
+}
